@@ -18,12 +18,18 @@ test("model structure", () => {
 });
 
 describe("record", () => {
-  const heroes = [{ name: "Batman" }, { name: "Spiderman" }];
+  const heroes = [{ id: 1, name: "Batman" }, { name: "Spiderman" }];
 
   test("can add data to the collection", () => {
     const model = new Model();
     model.record(heroes);
-    expect(model.$collection).toEqual(heroes);
+    expect(model.$collection).toEqual([
+      heroes[0],
+      {
+        id: expect.any(Number),
+        name: "Spiderman",
+      },
+    ]);
   });
 
   test("get called when data is passed to Model", () => {
@@ -35,7 +41,10 @@ describe("record", () => {
 });
 
 describe("all", () => {
-  const heroes = [{ name: "Batman" }, { name: "Spiderman" }];
+  const heroes = [
+    { id: 1, name: "Batman" },
+    { id: 2, name: "Spiderman" },
+  ];
 
   test("returns empty collection", () => {
     const model = new Model();
@@ -52,5 +61,22 @@ describe("all", () => {
     const data = model.all();
     data[0].name = "Joker";
     expect(model.$collection[0].name).toBe("Batman");
+  });
+});
+
+describe("find", () => {
+  const heroes = [
+    { id: 1, name: "Batman" },
+    { id: 2, name: "Spiderman" },
+  ];
+
+  test("id not found", () => {
+    const model = new Model();
+    expect(model.find(1)).toEqual(null);
+  });
+
+  test("id found", () => {
+    const model = new Model(heroes);
+    expect(model.find(1)).toEqual(heroes[0]);
   });
 });
