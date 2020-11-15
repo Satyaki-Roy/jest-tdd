@@ -1,0 +1,14 @@
+{
+  "name": "tdd-with-jest",
+  "version": "1.0.0",
+  "description": "Learning TDD with jest",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Satyaki Roy",
+  "license": "ISC",
+  "dependencies": {
+    "prettier": "^2.1.2"
+  }
+}
