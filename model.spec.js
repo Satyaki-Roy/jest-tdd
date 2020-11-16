@@ -1,4 +1,4 @@
-import { describe, jest, test } from "@jest/globals";
+import { beforeEach, describe, jest, test } from "@jest/globals";
 import Model from "./model";
 
 test("new works", () => {
@@ -78,5 +78,42 @@ describe("find", () => {
   test("id found", () => {
     const model = new Model(heroes);
     expect(model.find(1)).toEqual(heroes[0]);
+  });
+});
+
+describe("update", () => {
+  const heroes = [
+    { id: 1, name: "Batman" },
+    { id: 2, name: "Spiderman" },
+  ];
+
+  let model;
+
+  beforeEach(() => {
+    const dataset = JSON.parse(JSON.stringify(heroes));
+    model = new Model(dataset);
+  });
+
+  test("an entry by id", () => {
+    expect(model.update(1, { name: "Joker" })).toEqual(
+      expect.objectContaining({
+        id: 1,
+        name: "Joker",
+      })
+    );
+  });
+
+  test("extend an entry by id", () => {
+    expect(model.update(1, { fly: true })).toEqual(
+      expect.objectContaining({
+        id: 1,
+        name: "Batman",
+        fly: true,
+      })
+    );
+  });
+
+  test("returns false if no entry matches", () => {
+    expect(model.update(3, { fly: true })).toEqual(false);
   });
 });

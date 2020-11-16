@@ -33,5 +33,15 @@ export default class Model {
     return entry ? Object.assign({}, entry) : null;
   }
 
-  update() {}
+  update(id, data) {
+    const primaryKey = "id";
+    const index = this.$collection.findIndex(
+      (entry) => entry[primaryKey] === id
+    );
+    if (index < 0) return false;
+    for (const key of Object.keys(data)) {
+      this.$collection[index][key] = data[key];
+    }
+    return Object.assign({}, this.$collection[index]);
+  }
 }
